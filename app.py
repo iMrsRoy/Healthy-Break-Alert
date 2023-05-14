@@ -1,15 +1,15 @@
 """Greeting Flask app."""
 from flask import Flask, request;
-from flask import render_template, redirect, url_for; 
-
+from flask import render_template, redirect, url_for, routes
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+db = SQLAlchemy(app)
 
 @app.route('/')
 def home():
     return render_template('index.html')
-
-
 
 @app.route('/login')
 def login():
