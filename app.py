@@ -4,8 +4,10 @@ from flask import render_template, redirect, url_for, routes
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 db = SQLAlchemy(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+app.config['SECRET_KEY'] = 'thisisasecretkey'
+
 
 @app.route('/')
 def home():
