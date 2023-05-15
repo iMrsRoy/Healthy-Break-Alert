@@ -9,7 +9,7 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
 
     def __repr__(self):
@@ -19,14 +19,14 @@ class User(db.Model):
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
 
-        user = User.query.filter_by(username=username).first()
+        user = User.query.filter_by(email=email).first()
         if user:
             return redirect(url_for('login'))
 
-        new_user = User(username=username, password=password)
+        new_user = User(email=email, password=password)
         db.session.add(new_user)
         db.session.commit()
 
@@ -38,12 +38,12 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
 
-        user = User.query.filter_by(username=username, password=password).first()
+        user = User.query.filter_by(email=email, password=password).first()
         if user:
-            session['username'] = username
+            session['email'] = email
 
             return redirect(url_for('index'))
 
@@ -54,8 +54,8 @@ def login():
 @app.route('/')
 def index():
     # Check if the user is logged in
-    if 'username' in session:
-        return 'Welcome, ' + session['username'] + '!'
+    if 'email' in session:
+        return 'Welcome, ' + session['email'] + '!'
 
     return redirect(url_for('login'))
 
